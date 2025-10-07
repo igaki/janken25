@@ -11,6 +11,53 @@ CPUと対戦するじゃんけんゲームの基本機能をSpring Bootで実装
 - src/main/resources/templates/result.html
 - src/test/java/oit/is/z9999/kaizi/janken/JankenServiceTests.java
 
+# ユーザログイン機能追加計画 2025-10-07
+
+## 概要
+Spring Boot + Spring Security によるユーザログイン機能の追加計画。
+
+## 関連ファイル
+- src/main/java/oit/is/z9999/kaizi/janken/LoginController.java
+- src/main/java/oit/is/z9999/kaizi/janken/UserService.java
+- src/main/java/oit/is/z9999/kaizi/janken/model/User.java
+- src/main/java/oit/is/z9999/kaizi/janken/config/SecurityConfig.java
+- src/main/resources/templates/login.html
+- src/main/resources/templates/home.html
+- src/test/java/oit/is/z9999/kaizi/janken/UserServiceTests.java
+
+## タスク一覧
+1. Userモデルクラスの作成
+   - ユーザID、パスワード等を保持するクラス
+2. UserServiceクラスの作成
+   - ユーザ認証ロジックの実装
+   - ユーザ情報の管理（メモリ）
+3. SecurityConfigクラスの作成
+   - Spring Securityの認証設定
+4. LoginControllerクラスの作成
+   - ログイン画面表示、認証処理
+5. 画面（login.html, home.html）の作成
+   - ログインフォーム、認証後のホーム画面
+6. テストコードの作成
+   - UserServiceの認証ロジックの単体テスト
+
+## 優先順位
+1 → 2 → 3 → 4 → 5 → 6 の順で実施
+
+---
+
+# じゃんけん（CPU対戦）実装計画 2025-10-06
+
+## 概要
+CPUと対戦するじゃんけんゲームの基本機能をSpring Bootで実装するための計画。
+
+## 関連ファイル
+- src/main/java/oit/is/z9999/kaizi/janken/JankenController.java
+- src/main/java/oit/is/z9999/kaizi/janken/JankenService.java
+- src/main/java/oit/is/z9999/kaizi/janken/model/JankenResult.java
+- src/main/resources/templates/janken.html
+- src/main/resources/templates/result.html
+- src/test/java/oit/is/z9999/kaizi/janken/JankenServiceTests.java
+
 ## タスク一覧
 1. JankenResultモデルクラスの作成
    - ユーザの手、CPUの手、勝敗結果を保持するクラス
