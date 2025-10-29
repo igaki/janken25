@@ -16,6 +16,30 @@
     <input type="radio" name="userHand" value="パー"> パー<br><br>
     <button type="submit">勝負！</button>
   </form>
+
+  <h2>直近5戦の履歴</h2>
+  <div th:if="${recentHistory == null or #lists.isEmpty(recentHistory)}">履歴はありません。</div>
+  <table th:if="${recentHistory != null and !#lists.isEmpty(recentHistory)}" border="1">
+    <thead>
+      <tr>
+        <th>日時</th>
+        <th>あなたの手</th>
+        <th>CPUの手</th>
+        <th>勝敗</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="h : ${recentHistory}">
+        <td th:text="${h.playedAt}"></td>
+        <td th:text="${h.userHand}"></td>
+        <td th:text="${h.cpuHand}"></td>
+        <td th:text="${h.result}"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><a href="/janken/history">対戦履歴（すべて）</a></p>
+
 </body>
 
 </html>

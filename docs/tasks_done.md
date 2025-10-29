@@ -40,5 +40,23 @@
   1. 変更内容をコミット・プッシュする（まだリモートへはプッシュしていない場合）
   2. `docs/specs.md` と `docs/reports/done_2025-10-21_認証ログイン実装.md` を更新して仕様・完了報告を残す
 
+### 2025-10-28: 対戦履歴の永続化実装（H2 + MyBatis）
+- 概要: 対戦履歴を H2 に永続化し、対戦ページで直近5戦、履歴ページで全件表示する機能を実装
+- 実施ファイル一覧:
+  - `janken/src/main/resources/schema.sql`
+  - `janken/src/main/java/oit/is/z9999/kaizi/janken/model/JankenHistory.java`
+  - `janken/src/main/java/oit/is/z9999/kaizi/janken/mapper/JankenHistoryMapper.java`
+  - `janken/src/main/resources/mapper/JankenHistoryMapper.xml`
+  - `janken/src/main/java/oit/is/z9999/kaizi/janken/service/HistoryService.java`
+  - `janken/src/main/java/oit/is/z9999/kaizi/janken/service/MybatisHistoryService.java`
+  - `janken/src/main/resources/templates/history.html`
+  - `janken/src/test/java/oit/is/z9999/kaizi/janken/JankenHistoryMapperTests.java`
+  - `janken/src/test/java/oit/is/z9999/kaizi/janken/MybatisHistoryServiceTests.java`
+- 動作確認手順:
+  1. `./gradlew bootRun` でアプリ起動
+  2. `http://localhost:8080/` にアクセスし `yamada`/`tarou` でログイン
+  3. `/janken` で複数回対戦し、直近5件が表示されることを確認
+  4. `/janken/history` で過去すべてが表示されることを確認
+
 ---
 *実装完了後、このファイルに完了した計画を追記します*

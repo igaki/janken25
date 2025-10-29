@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="oit.is.z9999.kaizi.janken.mapper.JankenHistoryMapper">
+
+  <insert id="insert" parameterType="oit.is.z9999.kaizi.janken.model.JankenHistory">
+    INSERT INTO janken_history(username, user_hand, cpu_hand, result)
+    VALUES(#{username}, #{userHand}, #{cpuHand}, #{result})
+  </insert>
+
+  <select id="selectRecentByUsername" resultType="oit.is.z9999.kaizi.janken.model.JankenHistory">
+    SELECT id, username, user_hand AS userHand, cpu_hand AS cpuHand, result, played_at AS playedAt
+    FROM janken_history
+    WHERE username = #{username}
+    ORDER BY played_at DESC
+    LIMIT #{limit}
+  </select>
+
+  <select id="selectByUsername" resultType="oit.is.z9999.kaizi.janken.model.JankenHistory">
+    SELECT id, username, user_hand AS userHand, cpu_hand AS cpuHand, result, played_at AS playedAt
+    FROM janken_history
+    WHERE username = #{username}
+    ORDER BY played_at DESC
+  </select>
+
+</mapper>
