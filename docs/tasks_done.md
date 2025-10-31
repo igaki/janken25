@@ -58,5 +58,17 @@
   3. `/janken` で複数回対戦し、直近5件が表示されることを確認
   4. `/janken/history` で過去すべてが表示されることを確認
 
+### 2025-10-31: Tailwind CDN プロトタイプ適用
+- 概要: Tailwind CSS の CDN を導入し、テンプレートにクールなダークテーマを適用してデザインを検証するプロトタイプを作成。
+- 実施内容:
+  - `janken/src/main/resources/templates/janken.html` に Tailwind CDN スニペットを追加し、フォーム・カード・テーブルに Tailwind クラスを適用
+  - `janken/src/main/resources/templates/result.html` に Tailwind CDN スニペットを追加し、結果表示のスタイルを適用
+  - `janken/src/main/resources/templates/history.html` に Tailwind CDN スニペットを追加し、履歴一覧のスタイルを適用
+- ブランチ: `feat/tailwind-cdn-prototype`
+- 確認手順:
+  1. `./gradlew bootRun` を実行
+  2. ブラウザで `/janken`, `/janken/history`, 結果ページを確認
+- 備考: これはプロトタイプ実装。将来的に Tailwind をビルドして静的 CSS として配備する予定。
+
 ---
 *実装完了後、このファイルに完了した計画を追記します*

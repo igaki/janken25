@@ -135,4 +135,99 @@
 
 ---
 
+# Tailwind CDN プロトタイプ適用 計画（2025-10-31）
+
+## 概要
+- 目的: Tailwind の CDN を用いて `index.html`, `janken.html`, `result.html`, `history.html` にクールなダークテーマ UI を素早く適用し、デザインを検証するプロトタイプを作成する。
+- 対象ファイル（編集対象）:
+  - `src/main/resources/templates/index.html`
+  - `src/main/resources/templates/janken.html`
+  - `src/main/resources/templates/result.html`
+  - `src/main/resources/templates/history.html`
+  - （必要に応じて）`src/main/resources/templates/fragments/head.html`
+
+## 前提条件
+- ローカルで Gradle / Spring Boot が起動できること
+- 本作業はプロトタイプ目的。CSP 等の運用制約がある場合は事前に確認すること
+
+## ブランチ戦略
+- 新規ブランチ名: `feat/tailwind-cdn-prototype`
+- すべての作業は上記ブランチで行い、タスクごとに semantic commit を実施する（例: `feat: add tailwind CDN snippet to head`）
+
+## タスク分割（小タスク・順序）
+1. ブランチ作成
+   - コマンド例: `git switch -c feat/tailwind-cdn-prototype`
+   - コミット: `feat: create branch for tailwind cdn prototype`
+
+2. head スニペット追加（共通化可能なら fragments/head.html を更新）
+   - 追加内容: Google Fonts (Inter)、`https://cdn.tailwindcss.com`、`tailwind.config` の簡易拡張、基本フォント style
+   - 編集ファイル: 各テンプレートの `<head>` または共通フラグメント
+   - コミット例: `feat: add tailwind CDN snippet to template head`
+
+3. ベースレイアウト適用（共通スタイル）
+   - 変更: 各テンプレートの body に `min-h-screen bg-slate-900 text-slate-100` を適用。主要コンテナに `max-w-4xl mx-auto p-8 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg` 等を追加
+   - コミット例: `feat: apply base layout classes to templates`
+
+4. ページ別スタイル適用（ページ単位でコミット）
+   - `index.html`: ヒーロー、CTA ボタン
+   - `janken.html`: ステータスバー、手カードグリッド
+   - `result.html`: 勝敗表示カード、ボタン群
+   - `history.html`: 検索バー、履歴リスト
+   - 各ファイルごとに小さな変更でコミット（例: `feat: style index hero and CTA`）
+
+5. 起動・動作確認と微修正
+   - コマンド: `./gradlew bootRun`
+   - 確認ページ: `/`, `/janken`, `/janken/history`（結果ページも確認）
+   - 必要に応じて修正し `fix:` コミットを行う
+
+6. ドキュメント更新・レポート作成
+   - `docs/reports/done_YYYY-MM-DD_tailwind-cdn-prototype.md` を作成し、実施内容・確認手順・ブランチ名を記載
+   - `docs/tasks_done.md` に要約を先頭行として追記
+   - コミット例: `docs: add done report for tailwind CDN prototype`
+
+## 具体的な挿入スニペット（head）
+- 各テンプレートの `<head>` に以下を追加（コメントで囲むと差分確認しやすい）:
+
+```html
+<!-- tailwind-cdn-start -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { primary: '#06b6d4', accent: '#3b82f6' },
+        fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] }
+      }
+    }
+  }
+</script>
+<style>body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}</style>
+<!-- tailwind-cdn-end -->
+```
+
+## ベースクラス例（適用候補）
+- body: `min-h-screen bg-slate-900 text-slate-100`
+- コンテナ: `max-w-4xl mx-auto p-8 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg`
+- グリッド: `grid grid-cols-1 sm:grid-cols-3 gap-6`
+- ボタン: `px-6 py-3 rounded-lg text-white font-semibold bg-gradient-to-r from-primary to-accent shadow-md hover:scale-105 transition-transform`
+
+## Definition of Done (DoD)
+- 4 テンプレートに head スニペットが追加されていること（共通フラグメントに追加した場合はその旨コメント）
+- 各ページにベースの Tailwind クラスが適用され、ブラウザで「ダーク・クール」な見た目になっていること
+- `./gradlew bootRun` で起動し、主要ページが表示されること（UI 崩れなし）
+- レスポンシブ確認を行い大きな崩れがないこと
+- docs に完了レポートを作成し `docs/tasks_done.md` を更新すること
+- すべてのコミットは semantic commit を使用すること
+
+## 検証手順（簡易）
+1. `git switch -c feat/tailwind-cdn-prototype`
+2. 編集を段階的に実施しコミット
+3. `./gradlew bootRun` を実行
+4. ブラウザで `/`, `/janken`, `/janken/history` を確認
+5. devtools でレスポンシブ表示を確認
+6. 問題なければプッシュして PR を作成
+
+---
+
 実装を開始する場合は「実装」と指示してください。実装前にこの計画に基づき作業ブランチを作成し、タスクごとにコミットします（semantic commit を使用）。
