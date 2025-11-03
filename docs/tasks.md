@@ -230,4 +230,98 @@
 
 ---
 
-実装を開始する場合は「実装」と指示してください。実装前にこの計画に基づき作業ブランチを作成し、タスクごとにコミットします（semantic commit を使用）。
+# 修正計画: レビュー対応（2025-10-31）
+
+## 目的
+レビュー報告書（docs/reports/review_2025-10-31_TailwindCDNレビュー.md）の指摘に基づき、プロトタイプ実装の保守性・運用性を向上させるための修正を段階的に実施する。
+
+## 優先度と対象
+優先度（高→低）
+1. 自動テストの実行と通過確認（高）
+2. head スニペットの共通化（中）
+3. Git commit / push / PR の実施（高）
+4. index.html の扱い決定とドキュメント反映（中）
+5. HTML の lang / meta の統一（低）
+6. 日時フォーマットの整備（低）
+
+対象ファイル（主な編集箇所）
+- `janken/src/main/resources/templates/fragments/head.html` (新規)
+- `janken/src/main/resources/templates/janken.html`
+- `janken/src/main/resources/templates/result.html`
+- `janken/src/main/resources/templates/history.html`
+- `janken/src/main/resources/static/index.html`（扱い検討）
+- `docs/reports/review_2025-10-31_TailwindCDNレビュー.md`（結果追記）
+- `docs/tasks_done.md`, `docs/reports/done_2025-10-31_tailwind-cdn-prototype.md`（更新済みなら反映）
+
+## 作業タスク（順序・小分け）
+1. テスト実行と現状把握（所要: 0.25h）
+   - `./gradlew test` を実行し、失敗テストがないか確認する。
+   - 問題がある場合はテストを修正または原因を特定する。
+   - コミット: `test: run tests before review fixes`（必要に応じて）
+
+2. head 共通フラグメント化（所要: 0.5h）
+   - 新規ファイル作成: `janken/src/main/resources/templates/fragments/head.html`
+     - head スニペットをここに移動（Google Fonts, tailwind CDN, tailwind.config, body font style）。
+     - fragment 名は `head` とする。
+   - 各テンプレートの `<head>` を以下に置換:
+     - `th:replace="fragments/head :: head"`
+   - 動作確認: `./gradlew bootRun` → 各ページが正しく表示されることを確認する。
+   - コミット: `feat: extract head snippet to fragments/head.html and reference from templates`
+
+3. index.html の扱い決定と対応（所要: 0.25h）
+   - 選択肢A: `static/index.html` を templates に移動して共通 head を利用する。リンクやルーティングを確認。
+   - 選択肢B: static のままにしておく旨を docs に明記（理由を記載）。
+   - 実施内容に応じてファイル移動/編集を行う。
+   - コミット: `chore: decide index.html handling and apply change`
+
+4. HTML の lang / meta 統一（所要: 0.25h）
+   - すべてのテンプレートの `<html>` に `lang="ja"` を追加。
+   - `fragments/head.html` に `meta name="viewport" content="width=device-width, initial-scale=1"` を追加。
+   - コミット: `chore: add lang and viewport meta to templates`
+
+5. 日時フォーマット調整（所要: 0.5h）
+   - 表示箇所のフォーマットを Thymeleaf のフォーマット関数で整える（例: `<td th:text="${#dates.format(h.playedAt, 'yyyy-MM-dd HH:mm')}">`）。
+   - 必要に応じて `playedAt` の型（LocalDateTime）確認。
+   - コミット: `fix: format playedAt display in templates`
+
+6. 動作確認・微修正（所要: 0.5h）
+   - `./gradlew bootRun` を実行し、以下を確認:
+     - `/janken`, `/janken/history`, 結果ページの表示
+     - head の共通化が正しく機能していること
+     - レスポンシブ確認（devtools）
+     - ブラウザコンソールのエラーがないこと
+   - 必要な微修正を行い `fix:` コミットを行う。
+
+7. Git 作業と PR 作成（所要: 0.25h）
+   - ブランチ戦略:
+     - 既存の作業ブランチがある場合: `git switch feat/tailwind-cdn-prototype`（未作成なら作成）
+     - レビュー修正用ブランチ名: `fix/tailwind-review`（推奨）
+   - コマンド例:
+     - `git switch -c fix/tailwind-review`
+     - `git add -A`
+     - `git commit -m "fix: address review items (head fragment, lang/meta, date format, docs)"`
+     - `git push -u origin fix/tailwind-review`
+     - PR タイトル: `fix: review fixes for Tailwind CDN prototype`
+     - PR 本文に変更点と確認手順（DoD）を記載する。
+
+8. ドキュメント更新（所要: 0.25h）
+   - `docs/reports/review_2025-10-31_TailwindCDNレビュー.md` に修正内容と確認結果を追記
+   - `docs/tasks_done.md` に本修正の完了履歴を追記
+   - コミット: `docs: update review report and tasks_done for fixes`
+
+## Definition of Done（最終）
+- `fragments/head.html` に head スニペットが移動され、すべてのテンプレートが `th:replace` で参照していること
+- すべてのテンプレートに `lang="ja"` と viewport meta が追加されていること
+- `playedAt` の表示がユーザ向けフォーマットで表示されること
+- `./gradlew test` が成功すること
+- ブラウザで主要ページを確認し UI の崩れやコンソールエラーがないこと
+- 変更が `fix/tailwind-review` ブランチに semantic commit でコミットされ、PR が作成されていること
+
+## 見積り（合計）
+- 合計: 約 3.0 時間（テスト・確認含む）
+
+---
+
+次のアクション（選択）
+- 私にて修正を実施する: 指示 "実装してください" を送ってください。私は `fix/tailwind-review` ブランチを作成して順に実装・コミットします。
+- ユーザが自分で実施する: 上記手順に従って作業を進めてください。
