@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<head th:replace="fragments/head :: head">
+<head th:replace="~{fragments/head :: head}">
   <title>Janken</title>
 </head>
 
@@ -50,7 +50,7 @@
         </thead>
         <tbody class="text-sm">
           <tr th:each="h : ${recentHistory}" class="odd:bg-white/3 even:bg-transparent">
-            <td class="py-2" th:text="${#dates.format(h.playedAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td class="py-2" th:text="${#temporals.format(h.playedAt, 'yyyy-MM-dd HH:mm')}"></td>
             <td class="py-2" th:text="${h.userHand}"></td>
             <td class="py-2" th:text="${h.cpuHand}"></td>
             <td class="py-2" th:text="${h.result}"></td>

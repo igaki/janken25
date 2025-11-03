@@ -1,12 +1,14 @@
 <!-- fragments/head.html -->
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="head">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Tailwind CDN and Google Fonts -->
+  <title th:text="${pageTitle ?: 'Janken'}">Janken</title>
+
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,11 +20,10 @@
       }
     }
   </script>
+
   <style>
     body {
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
   </style>
 </head>
-
-</html>
