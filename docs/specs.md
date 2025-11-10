@@ -2,8 +2,8 @@
 
 ## プロジェクト概要
 
-**プロジェクト名**: janken25  
-**バージョン**: 0.0.1-SNAPSHOT  
+**プロジェクト名**: janken25
+**バージョン**: 0.0.1-SNAPSHOT
 **説明**: Spring Boot を使用したじゃんけんゲームアプリケーション
 
 ## 技術スタック
@@ -61,6 +61,18 @@
   - コントローラの画面遷移・レスポンス内容のテスト
 - **ブランチ運用**: feat/janken-cpu-game
   - semantic commit・プッシュ・プルリクエスト
+
+## フロントエンド（追記）
+
+### Tailwind CDN プロトタイプ適用（2025-10-31）
+- 概要: 開発プロトタイプとして Tailwind CSS の CDN を導入し、既存のテンプレートにクールなダークテーマを適用した。
+- 変更対象:
+  - `janken/src/main/resources/templates/janken.html` — Tailwind CDN スニペット追加、ダークテーマのベースクラスとカード・ボタン・テーブルのユーティリティを適用
+  - `janken/src/main/resources/templates/result.html` — Tailwind CDN スニペット追加、結果表示のスタイル適用
+  - `janken/src/main/resources/templates/history.html` — Tailwind CDN スニペット追加、履歴一覧のスタイル適用
+- 目的: デザイン検証を迅速に行い、本番導入時のスタイル方針を確定する。
+- 注意点:
+  - 本実装は CDN を利用したプロトタイプであり、本番では Tailwind をビルドし静的 CSS として配備することを推奨する。
 
 ## プロジェクト構成
 
@@ -128,3 +140,4 @@ cd janken
 | 日付 | バージョン | 更新内容 |
 |------|-----------|---------|
 | 2025-xx-xx | 0.0.1-SNAPSHOT | 初版作成。Spring Boot基本構成を記載 |
+| 2025-10-31 | 0.0.1-SNAPSHOT | Tailwind CDN を用いたテンプレートのプロトタイプ適用（janken/result/history にスタイル追加、ドキュメント更新） |

@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
-<head>
-  <meta charset="utf-8">
+<head th:replace="~{fragments/head :: head}">
   <title>対戦履歴</title>
 </head>
 
-<body>
-  <h1>対戦履歴</h1>
-  <a href="/janken">対戦ページに戻る</a>
-  <div th:if="${history == null or #lists.isEmpty(history)}">
-    履歴はありません。
+<body class="min-h-screen bg-slate-900 text-slate-100">
+  <div class="max-w-4xl mx-auto p-8 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg mt-12">
+    <h1 class="text-2xl md:text-3xl font-extrabold mb-4">対戦履歴</h1>
+    <a href="/janken" class="inline-block mb-4 text-cyan-300 hover:underline">対戦ページに戻る</a>
+
+    <div th:if="${history == null or #lists.isEmpty(history)}" class="mt-4 text-sm text-white/70">
+      履歴はありません。
+    </div>
+
+    <div class="mt-4 overflow-x-auto">
+      <table th:if="${history != null and !#lists.isEmpty(history)}" class="w-full text-left divide-y divide-white/6">
+        <thead>
+          <tr class="text-sm text-white/80">
+            <th class="py-2">日時</th>
+            <th class="py-2">あなたの手</th>
+            <th class="py-2">CPUの手</th>
+            <th class="py-2">勝敗</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm">
+          <tr th:each="h : ${history}" class="odd:bg-white/3 even:bg-transparent">
+            <td class="py-2" th:text="${#temporals.format(h.playedAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td class="py-2" th:text="${h.userHand}"></td>
+            <td class="py-2" th:text="${h.cpuHand}"></td>
+            <td class="py-2" th:text="${h.result}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <table th:if="${history != null and !#lists.isEmpty(history)}" border="1">
-    <thead>
-      <tr>
-        <th>日時</th>
-        <th>あなたの手</th>
-        <th>CPUの手</th>
-        <th>勝敗</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="h : ${history}">
-        <td th:text="${h.playedAt}"></td>
-        <td th:text="${h.userHand}"></td>
-        <td th:text="${h.cpuHand}"></td>
-        <td th:text="${h.result}"></td>
-      </tr>
-    </tbody>
-  </table>
 </body>
 
 </html>
